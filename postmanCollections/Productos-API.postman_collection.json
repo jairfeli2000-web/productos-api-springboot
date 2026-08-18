@@ -1,0 +1,90 @@
+{
+  "info": {
+    "name": "Productos API - Spring Boot",
+    "description": "Colección de pruebas CRUD para la API de Productos",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080"
+    }
+  ],
+  "item": [
+    {
+      "name": "Crear Producto",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Laptop HP Pavilion\",\n  \"descripcion\": \"Laptop HP Pavilion 15 pulgadas, 16GB RAM, 512GB SSD\",\n  \"precio\": 2500000\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/productos",
+          "host": ["{{base_url}}"],
+          "path": ["api", "productos"]
+        }
+      }
+    },
+    {
+      "name": "Obtener Todos los Productos",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/api/productos",
+          "host": ["{{base_url}}"],
+          "path": ["api", "productos"]
+        }
+      }
+    },
+    {
+      "name": "Obtener Producto por ID",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/api/productos/ID_DEL_PRODUCTO",
+          "host": ["{{base_url}}"],
+          "path": ["api", "productos", "ID_DEL_PRODUCTO"]
+        }
+      }
+    },
+    {
+      "name": "Actualizar Producto",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Laptop HP Pavilion (Actualizado)\",\n  \"descripcion\": \"Laptop HP Pavilion 15 pulgadas, 32GB RAM, 1TB SSD - Modelo actualizado\",\n  \"precio\": 3200000\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/productos/ID_DEL_PRODUCTO",
+          "host": ["{{base_url}}"],
+          "path": ["api", "productos", "ID_DEL_PRODUCTO"]
+        }
+      }
+    },
+    {
+      "name": "Eliminar Producto",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "{{base_url}}/api/productos/ID_DEL_PRODUCTO",
+          "host": ["{{base_url}}"],
+          "path": ["api", "productos", "ID_DEL_PRODUCTO"]
+        }
+      }
+    }
+  ]
+}
