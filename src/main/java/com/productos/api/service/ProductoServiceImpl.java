@@ -51,6 +51,17 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
+    public List<ProductoDTO> crearVarios(List<ProductoDTO> productosDTO) {
+        List<Producto> productos = productosDTO.stream()
+                .map(this::convertirAEntidad)
+                .collect(Collectors.toList());
+        List<Producto> productosGuardados = productoRepository.saveAll(productos);
+        return productosGuardados.stream()
+                .map(this::convertirADTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public ProductoDTO actualizar(String id, ProductoDTO productoDTO) {
         Producto productoExistente = productoRepository.findById(id)
                 .orElseThrow(() -> new ProductoNotFoundException(id));

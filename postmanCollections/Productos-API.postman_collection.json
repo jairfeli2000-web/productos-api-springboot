@@ -12,7 +12,7 @@
   ],
   "item": [
     {
-      "name": "Crear Producto",
+      "name": "Crear Producto (uno)",
       "request": {
         "method": "POST",
         "header": [
@@ -29,6 +29,27 @@
           "raw": "{{base_url}}/api/productos",
           "host": ["{{base_url}}"],
           "path": ["api", "productos"]
+        }
+      }
+    },
+    {
+      "name": "Crear Productos (batch - 9 productos)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "[\n  {\n    \"nombre\": \"Smartphone Samsung Galaxy S24\",\n    \"descripcion\": \"Smartphone 6.2 pulgadas, 8GB RAM, 256GB almacenamiento\",\n    \"precio\": 3200000\n  },\n  {\n    \"nombre\": \"Audifonos Sony WH-1000XM5\",\n    \"descripcion\": \"Audifonos inalambricos con cancelacion de ruido activa\",\n    \"precio\": 1450000\n  },\n  {\n    \"nombre\": \"Monitor LG UltraWide 34\",\n    \"descripcion\": \"Monitor curvo 34 pulgadas, 3440x1440, 144Hz\",\n    \"precio\": 2800000\n  },\n  {\n    \"nombre\": \"Teclado Mecanico Logitech G Pro\",\n    \"descripcion\": \"Teclado mecanico RGB, switches GX Blue, compacto TKL\",\n    \"precio\": 520000\n  },\n  {\n    \"nombre\": \"Mouse Razer DeathAdder V3\",\n    \"descripcion\": \"Mouse gaming ergonomico, sensor 30000 DPI, 90 gramos\",\n    \"precio\": 380000\n  },\n  {\n    \"nombre\": \"Tablet iPad Air M2\",\n    \"descripcion\": \"Tablet Apple 11 pulgadas, chip M2, 128GB, Wi-Fi\",\n    \"precio\": 3500000\n  },\n  {\n    \"nombre\": \"Disco SSD Samsung 990 Pro 2TB\",\n    \"descripcion\": \"Disco estado solido NVMe PCIe 4.0, lectura 7450MB/s\",\n    \"precio\": 890000\n  },\n  {\n    \"nombre\": \"Camara Web Logitech C920\",\n    \"descripcion\": \"Webcam Full HD 1080p, microfono estereo integrado\",\n    \"precio\": 280000\n  },\n  {\n    \"nombre\": \"Parlante JBL Charge 5\",\n    \"descripcion\": \"Parlante Bluetooth portatil, resistente al agua IP67, 20h bateria\",\n    \"precio\": 650000\n  }\n]"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/productos/batch",
+          "host": ["{{base_url}}"],
+          "path": ["api", "productos", "batch"]
         }
       }
     },

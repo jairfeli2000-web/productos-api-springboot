@@ -8,12 +8,32 @@ Aplicación backend que implementa servicios RESTful para crear, leer, actualiza
 
 ## Tecnologías
 
-- **Java 21** (LTS)
-- **Spring Boot 3.3.2**
+- **Java 17** (LTS)
+- **Spring Boot 3.2.5**
 - **Spring Data MongoDB** (ODM - Object-Document Mapper)
 - **MongoDB Atlas** (Base de datos NoSQL en la nube)
-- **Gradle 8.8** (Gestión de dependencias y build)
+- **Gradle 8.7** (Gestión de dependencias y build)
 - **Jakarta Validation** (Validación de datos de entrada)
+
+## Arquitectura
+
+El proyecto implementa una **arquitectura en capas (Layered Architecture)** con inversión de dependencias:
+
+```
+┌─────────────────────────────────┐
+│   Controller (Presentación)     │  ← Recibe peticiones HTTP
+├─────────────────────────────────┤
+│   DTO (Transferencia de datos)  │  ← Define qué ve el usuario
+├─────────────────────────────────┤
+│   Service (Lógica de negocio)   │  ← Reglas y operaciones CRUD
+├─────────────────────────────────┤
+│   Repository (Acceso a datos)   │  ← Comunicación con MongoDB
+├─────────────────────────────────┤
+│   Model (Entidad/Documento)     │  ← Estructura en la BD
+└─────────────────────────────────┘
+```
+
+Cada capa tiene una responsabilidad única (SRP) y solo se comunica con la capa inmediatamente inferior. El controller depende de la interfaz del servicio, no de la implementación concreta (Principio de Inversión de Dependencias).
 
 ## Estructura del Proyecto
 
@@ -35,13 +55,14 @@ src/main/java/com/productos/api/
 
 ## Endpoints
 
-| Método | Endpoint             | Descripción                   | Response     |
-|--------|---------------------|-------------------------------|--------------|
-| GET    | /api/productos      | Obtener todos los productos   | 200 OK       |
-| GET    | /api/productos/{id} | Obtener producto por ID       | 200 / 404    |
-| POST   | /api/productos      | Crear nuevo producto          | 201 Created  |
-| PUT    | /api/productos/{id} | Actualizar producto existente | 200 / 404    |
-| DELETE | /api/productos/{id} | Eliminar producto             | 204 / 404    |
+| Método | Endpoint                  | Descripción                   | Response     |
+|--------|--------------------------|-------------------------------|--------------|
+| GET    | /api/productos           | Obtener todos los productos   | 200 OK       |
+| GET    | /api/productos/{id}      | Obtener producto por ID       | 200 / 404    |
+| POST   | /api/productos           | Crear nuevo producto          | 201 Created  |
+| POST   | /api/productos/batch     | Crear múltiples productos     | 201 Created  |
+| PUT    | /api/productos/{id}      | Actualizar producto existente | 200 / 404    |
+| DELETE | /api/productos/{id}      | Eliminar producto             | 204 / 404    |
 
 ## Modelo de Datos - Producto
 

@@ -37,6 +37,12 @@ public class ProductoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(productoCreado);
     }
 
+    @PostMapping("/batch")
+    public ResponseEntity<List<ProductoDTO>> crearVarios(@Valid @RequestBody List<ProductoDTO> productosDTO) {
+        List<ProductoDTO> productosCreados = productoService.crearVarios(productosDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(productosCreados);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<ProductoDTO> actualizar(@PathVariable String id,
                                                   @Valid @RequestBody ProductoDTO productoDTO) {

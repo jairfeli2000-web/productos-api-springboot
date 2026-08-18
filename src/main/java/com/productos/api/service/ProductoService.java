@@ -16,6 +16,13 @@ public interface ProductoService {
 
     ProductoDTO crear(ProductoDTO productoDTO);
 
+    /**
+     * Crea múltiples productos en una sola operación.
+     * @param productosDTO lista de productos a crear
+     * @return lista de ProductoDTO creados con sus IDs generados
+     */
+    List<ProductoDTO> crearVarios(List<ProductoDTO> productosDTO);
+
     ProductoDTO actualizar(String id, ProductoDTO productoDTO);
 
     void eliminar(String id);
