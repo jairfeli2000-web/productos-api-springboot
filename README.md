@@ -272,6 +272,12 @@ cd productos-api-springboot
 
 Importar la colección de Postman ubicada en `postmanCollections/Productos-API.postman_collection.json` para probar todos los endpoints.
 
-## Autor
+## Materia
 
-Jair Felipe Sánchez López
+Arquitectura de Aplicaciones Web — Politécnico Grancolombiano
+
+## Integrantes
+
+- Jair Felipe Sánchez López
+- Yeison Stiven Linares Guacaneme
+- Jeison Stiven Ordoñez Moreno
