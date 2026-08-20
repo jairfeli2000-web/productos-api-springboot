@@ -42,17 +42,17 @@ graph TD
     Client[Cliente HTTP / Postman] -->|HTTP Request| Controller
 
     subgraph Spring Boot Application
-        Controller[ProductoController<br/>REST Endpoints]
-        DTO[ProductoDTO / ApiResponse<br/>Transferencia de datos]
-        ServiceInterface[«interface»<br/>ProductoService]
-        ServiceImpl[ProductoServiceImpl<br/>Lógica de negocio]
-        Repository[ProductoRepository<br/>Spring Data MongoDB]
-        Model[Producto<br/>@Document]
-        Exception[GlobalExceptionHandler<br/>Manejo de errores]
+        Controller[ProductoController]
+        DTO[ProductoDTO / ApiResponse]
+        ServiceInterface[ProductoService - interface]
+        ServiceImpl[ProductoServiceImpl]
+        Repository[ProductoRepository]
+        Model[Producto - Document]
+        Exception[GlobalExceptionHandler]
     end
 
     subgraph MongoDB Atlas
-        DB[(productos_db<br/>Colección: productos)]
+        DB[(productos_db)]
     end
 
     Controller --> DTO
