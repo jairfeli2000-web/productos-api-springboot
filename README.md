@@ -35,6 +35,142 @@ El proyecto implementa una **arquitectura en capas (Layered Architecture)** con 
 
 Cada capa tiene una responsabilidad única (SRP) y solo se comunica con la capa inmediatamente inferior. El controller depende de la interfaz del servicio, no de la implementación concreta (Principio de Inversión de Dependencias).
 
+## Diagrama de Componentes
+
+```mermaid
+graph TD
+    Client[Cliente HTTP / Postman] -->|HTTP Request| Controller
+
+    subgraph Spring Boot Application
+        Controller[ProductoController<br/>REST Endpoints]
+        DTO[ProductoDTO / ApiResponse<br/>Transferencia de datos]
+        ServiceInterface[«interface»<br/>ProductoService]
+        ServiceImpl[ProductoServiceImpl<br/>Lógica de negocio]
+        Repository[ProductoRepository<br/>Spring Data MongoDB]
+        Model[Producto<br/>@Document]
+        Exception[GlobalExceptionHandler<br/>Manejo de errores]
+    end
+
+    subgraph MongoDB Atlas
+        DB[(productos_db<br/>Colección: productos)]
+    end
+
+    Controller --> DTO
+    Controller --> ServiceInterface
+    ServiceInterface -.->|implementa| ServiceImpl
+    ServiceImpl --> Repository
+    ServiceImpl --> Model
+    Repository --> DB
+    Controller --> Exception
+```
+
+## Diagrama de Clases
+
+```mermaid
+classDiagram
+    class Producto {
+        -String id
+        -String nombre
+        -String descripcion
+        -Double precio
+        +getId() String
+        +setId(String) void
+        +getNombre() String
+        +setNombre(String) void
+        +getDescripcion() String
+        +setDescripcion(String) void
+        +getPrecio() Double
+        +setPrecio(Double) void
+    }
+
+    class ProductoDTO {
+        -String id
+        -String nombre
+        -String descripcion
+        -Double precio
+        +getId() String
+        +setId(String) void
+        +getNombre() String
+        +setNombre(String) void
+        +getDescripcion() String
+        +setDescripcion(String) void
+        +getPrecio() Double
+        +setPrecio(Double) void
+    }
+
+    class ApiResponse~T~ {
+        -String message
+        -T data
+        +getMessage() String
+        +setMessage(String) void
+        +getData() T
+        +setData(T) void
+    }
+
+    class ProductoService {
+        <<interface>>
+        +obtenerTodos() List~ProductoDTO~
+        +obtenerPorId(String) ProductoDTO
+        +crear(ProductoDTO) ProductoDTO
+        +crearVarios(List~ProductoDTO~) List~ProductoDTO~
+        +actualizar(String, ProductoDTO) ProductoDTO
+        +eliminar(String) void
+    }
+
+    class ProductoServiceImpl {
+        -ProductoRepository productoRepository
+        +obtenerTodos() List~ProductoDTO~
+        +obtenerPorId(String) ProductoDTO
+        +crear(ProductoDTO) ProductoDTO
+        +crearVarios(List~ProductoDTO~) List~ProductoDTO~
+        +actualizar(String, ProductoDTO) ProductoDTO
+        +eliminar(String) void
+        -convertirADTO(Producto) ProductoDTO
+        -convertirAEntidad(ProductoDTO) Producto
+    }
+
+    class ProductoRepository {
+        <<interface>>
+        +save(Producto) Producto
+        +findAll() List~Producto~
+        +findById(String) Optional~Producto~
+        +delete(Producto) void
+        +saveAll(List~Producto~) List~Producto~
+    }
+
+    class ProductoController {
+        -ProductoService productoService
+        +obtenerTodos() ResponseEntity
+        +obtenerPorId(String) ResponseEntity
+        +crear(ProductoDTO) ResponseEntity
+        +crearVarios(List~ProductoDTO~) ResponseEntity
+        +actualizar(String, ProductoDTO) ResponseEntity
+        +eliminar(String) ResponseEntity
+    }
+
+    class ProductoNotFoundException {
+        +ProductoNotFoundException(String)
+    }
+
+    class GlobalExceptionHandler {
+        +handleProductoNotFound(ProductoNotFoundException) ResponseEntity
+        +handleValidationErrors(MethodArgumentNotValidException) ResponseEntity
+        +handleGenericException(Exception) ResponseEntity
+    }
+
+    ProductoService <|.. ProductoServiceImpl : implementa
+    ProductoController --> ProductoService : usa
+    ProductoServiceImpl --> ProductoRepository : usa
+    ProductoServiceImpl --> Producto : convierte
+    ProductoServiceImpl --> ProductoDTO : convierte
+    ProductoController --> ProductoDTO : recibe/devuelve
+    ProductoController --> ApiResponse : envuelve respuesta
+    ProductoRepository --> Producto : persiste
+    ProductoServiceImpl ..> ProductoNotFoundException : lanza
+    GlobalExceptionHandler ..> ProductoNotFoundException : maneja
+    MongoRepository <|-- ProductoRepository : extiende
+```
+
 ## Estructura del Proyecto
 
 ```
@@ -114,7 +250,7 @@ src/main/java/com/productos/api/
 
 ## Requisitos Previos
 
-- Java 21 instalado
+- Java 17 instalado
 - Cuenta en MongoDB Atlas con cluster configurado
 
 ## Cómo Ejecutar
