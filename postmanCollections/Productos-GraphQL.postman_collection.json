@@ -1,0 +1,135 @@
+{
+  "info": {
+    "name": "Productos API - GraphQL",
+    "description": "Colección de pruebas GraphQL para la API de Productos (Spring for GraphQL)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080"
+    }
+  ],
+  "item": [
+    {
+      "name": "Query - Obtener Todos los Productos",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "graphql",
+          "graphql": {
+            "query": "query {\n  productos {\n    id\n    nombre\n    descripcion\n    precio\n  }\n}",
+            "variables": ""
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/graphql",
+          "host": ["{{base_url}}"],
+          "path": ["graphql"]
+        }
+      }
+    },
+    {
+      "name": "Query - Obtener Producto por ID",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "graphql",
+          "graphql": {
+            "query": "query ProductoPorId($id: ID!) {\n  productoPorId(id: $id) {\n    id\n    nombre\n    descripcion\n    precio\n  }\n}",
+            "variables": "{\n  \"id\": \"PEGA_UN_ID_REAL\"\n}"
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/graphql",
+          "host": ["{{base_url}}"],
+          "path": ["graphql"]
+        }
+      }
+    },
+    {
+      "name": "Mutation - Crear Producto",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "graphql",
+          "graphql": {
+            "query": "mutation CrearProducto($input: ProductoInput!) {\n  crearProducto(input: $input) {\n    id\n    nombre\n    descripcion\n    precio\n  }\n}",
+            "variables": "{\n  \"input\": {\n    \"nombre\": \"Mouse Logitech MX\",\n    \"descripcion\": \"Mouse inalambrico premium\",\n    \"precio\": 250000\n  }\n}"
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/graphql",
+          "host": ["{{base_url}}"],
+          "path": ["graphql"]
+        }
+      }
+    },
+    {
+      "name": "Mutation - Actualizar Producto",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "graphql",
+          "graphql": {
+            "query": "mutation ActualizarProducto($id: ID!, $input: ProductoInput!) {\n  actualizarProducto(id: $id, input: $input) {\n    id\n    nombre\n    descripcion\n    precio\n  }\n}",
+            "variables": "{\n  \"id\": \"PEGA_UN_ID_REAL\",\n  \"input\": {\n    \"nombre\": \"Mouse Logitech MX Master 3\",\n    \"descripcion\": \"Mouse ergonomico actualizado\",\n    \"precio\": 320000\n  }\n}"
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/graphql",
+          "host": ["{{base_url}}"],
+          "path": ["graphql"]
+        }
+      }
+    },
+    {
+      "name": "Mutation - Eliminar Producto",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "graphql",
+          "graphql": {
+            "query": "mutation EliminarProducto($id: ID!) {\n  eliminarProducto(id: $id)\n}",
+            "variables": "{\n  \"id\": \"PEGA_UN_ID_REAL\"\n}"
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/graphql",
+          "host": ["{{base_url}}"],
+          "path": ["graphql"]
+        }
+      }
+    }
+  ]
+}
