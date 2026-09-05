@@ -1,10 +1,10 @@
 # Productos API - Spring Boot
 
-API REST para la gestión de productos con operaciones CRUD, desarrollada con Spring Boot y MongoDB Atlas.
+API para la gestión de productos con operaciones CRUD, desarrollada con Spring Boot y MongoDB Atlas. Expone dos interfaces sobre la misma lógica de negocio: una **API REST** y una **API GraphQL**.
 
 ## Descripción
 
-Aplicación backend que implementa servicios RESTful para crear, leer, actualizar y eliminar productos. Utiliza Spring Data MongoDB como ODM (Object-Document Mapper) para la persistencia de datos en MongoDB Atlas (base de datos NoSQL en la nube).
+Aplicación backend que implementa servicios para crear, leer, actualizar y eliminar productos, expuestos vía REST y GraphQL. Utiliza Spring Data MongoDB como ODM (Object-Document Mapper) para la persistencia de datos en MongoDB Atlas (base de datos NoSQL en la nube) y Spring for GraphQL para las consultas declarativas.
 
 ## Tecnologías
 
@@ -38,12 +38,17 @@ Cada capa tiene una responsabilidad única (SRP) y solo se comunica con la capa 
 
 ## Diagrama de Componentes
 
+El proyecto expone dos interfaces sobre la misma capa de servicio: una API **REST** y una API **GraphQL**.
+
 ```mermaid
 graph TD
-    Client[Cliente HTTP / Postman] -->|HTTP Request| Controller
+    ClientRest[Cliente REST / Postman] -->|HTTP REST| RestController
+    ClientGraphQL[Cliente GraphQL / Postman] -->|POST /graphql| GraphQLController
 
     subgraph Spring Boot Application
-        Controller[ProductoController]
+        RestController[ProductoController - REST]
+        GraphQLController[ProductoGraphQLController - GraphQL]
+        Schema[schema.graphqls]
         DTO[ProductoDTO / ApiResponse]
         ServiceInterface[ProductoService - interface]
         ServiceImpl[ProductoServiceImpl]
@@ -56,13 +61,16 @@ graph TD
         DB[(productos_db)]
     end
 
-    Controller --> DTO
-    Controller --> ServiceInterface
+    GraphQLController -.->|define contrato| Schema
+    RestController --> DTO
+    GraphQLController --> DTO
+    RestController --> ServiceInterface
+    GraphQLController --> ServiceInterface
     ServiceInterface -.->|implementa| ServiceImpl
     ServiceImpl --> Repository
     ServiceImpl --> Model
     Repository --> DB
-    Controller --> Exception
+    RestController --> Exception
 ```
 
 ## Diagrama de Clases
@@ -149,6 +157,15 @@ classDiagram
         +eliminar(String) ResponseEntity
     }
 
+    class ProductoGraphQLController {
+        -ProductoService productoService
+        +productos() List~ProductoDTO~
+        +productoPorId(String) ProductoDTO
+        +crearProducto(ProductoInput) ProductoDTO
+        +actualizarProducto(String, ProductoInput) ProductoDTO
+        +eliminarProducto(String) String
+    }
+
     class ProductoNotFoundException {
         +ProductoNotFoundException(String)
     }
@@ -161,6 +178,8 @@ classDiagram
 
     ProductoService <|.. ProductoServiceImpl : implementa
     ProductoController --> ProductoService : usa
+    ProductoGraphQLController --> ProductoService : usa
+    ProductoGraphQLController --> ProductoDTO : recibe/devuelve
     ProductoServiceImpl --> ProductoRepository : usa
     ProductoServiceImpl --> Producto : convierte
     ProductoServiceImpl --> ProductoDTO : convierte
@@ -175,19 +194,29 @@ classDiagram
 ## Estructura del Proyecto
 
 ```
-src/main/java/com/productos/api/
-├── ProductosApiApplication.java        # Clase principal (punto de entrada)
-├── model/
-│   └── Producto.java                   # Entidad/Documento mapeado a MongoDB
-├── repository/
-│   └── ProductoRepository.java         # Capa de acceso a datos (ODM)
-├── service/
-│   └── ProductoService.java            # Capa de lógica de negocio
-├── controller/
-│   └── ProductoController.java         # Capa de presentación (endpoints REST)
-└── exception/
-    ├── ProductoNotFoundException.java   # Excepción personalizada
-    └── GlobalExceptionHandler.java     # Manejo centralizado de errores
+src/main/
+├── java/com/productos/api/
+│   ├── ProductosApiApplication.java        # Clase principal (punto de entrada)
+│   ├── model/
+│   │   └── Producto.java                   # Entidad/Documento mapeado a MongoDB
+│   ├── dto/
+│   │   ├── ProductoDTO.java                # Objeto de transferencia de datos
+│   │   └── ApiResponse.java                # Wrapper de respuesta con mensaje
+│   ├── repository/
+│   │   └── ProductoRepository.java         # Capa de acceso a datos (ODM)
+│   ├── service/
+│   │   ├── ProductoService.java            # Interfaz de lógica de negocio
+│   │   └── ProductoServiceImpl.java        # Implementación de lógica de negocio
+│   ├── controller/
+│   │   ├── ProductoController.java         # Endpoints REST
+│   │   └── ProductoGraphQLController.java  # Resolvers GraphQL (Query/Mutation)
+│   └── exception/
+│       ├── ProductoNotFoundException.java  # Excepción personalizada
+│       └── GlobalExceptionHandler.java     # Manejo centralizado de errores
+└── resources/
+    ├── application.properties              # Configuración (MongoDB, GraphQL)
+    └── graphql/
+        └── schema.graphqls                 # Schema GraphQL (tipos, queries, mutations)
 ```
 
 ## Endpoints
