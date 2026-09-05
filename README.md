@@ -284,7 +284,13 @@ La integración usa la librería **Spring for GraphQL** (`spring-boot-starter-gr
 - **Endpoint GraphQL:** `http://localhost:8080/graphql`
 - **Interfaz GraphiQL (pruebas):** `http://localhost:8080/graphiql`
 
-Se puede probar tanto con **GraphiQL** (interfaz web integrada) como con **Postman** (importar `postmanCollections/Productos-GraphQL.postman_collection.json`). En Postman, usar un POST a `/graphql` con el Body en modo GraphQL.
+Se recomienda probar con **Postman** (importar `postmanCollections/Productos-GraphQL.postman_collection.json`). Usar un POST a `/graphql` con el Body en modo GraphQL, o con Body raw JSON:
+
+```json
+{ "query": "query { productos { id nombre precio } }" }
+```
+
+> Nota: La interfaz web GraphiQL (`/graphiql`) carga recursos desde el CDN externo `unpkg.com`. Si la red bloquea ese CDN (política CORS), GraphiQL no cargará; en ese caso, usar Postman, que consume el endpoint `/graphql` directamente sin dependencias externas.
 
 ### Operaciones disponibles
 
