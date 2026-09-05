@@ -11,6 +11,7 @@ Aplicación backend que implementa servicios RESTful para crear, leer, actualiza
 - **Java 17** (LTS)
 - **Spring Boot 3.2.5**
 - **Spring Data MongoDB** (ODM - Object-Document Mapper)
+- **Spring for GraphQL** (API GraphQL declarativa)
 - **MongoDB Atlas** (Base de datos NoSQL en la nube)
 - **Gradle 8.7** (Gestión de dependencias y build)
 - **Jakarta Validation** (Validación de datos de entrada)
@@ -271,6 +272,78 @@ cd productos-api-springboot
 ## Pruebas con Postman
 
 Importar la colección de Postman ubicada en `postmanCollections/Productos-API.postman_collection.json` para probar todos los endpoints.
+
+## API GraphQL
+
+Además de la API REST, el proyecto expone una **API GraphQL** que permite consultar información de forma declarativa (el cliente pide exactamente los campos que necesita).
+
+### Configuración
+
+La integración usa la librería **Spring for GraphQL** (`spring-boot-starter-graphql`). El schema se define en `src/main/resources/graphql/schema.graphqls`.
+
+- **Endpoint GraphQL:** `http://localhost:8080/graphql`
+- **Interfaz GraphiQL (pruebas):** `http://localhost:8080/graphiql`
+
+### Operaciones disponibles
+
+**Queries (consultas):**
+
+```graphql
+# Obtener todos los productos
+query {
+  productos {
+    id
+    nombre
+    descripcion
+    precio
+  }
+}
+
+# Obtener un producto por ID
+query {
+  productoPorId(id: "66c1a2b3d4e5f6789012abcd") {
+    nombre
+    precio
+  }
+}
+```
+
+**Mutations (modificaciones):**
+
+```graphql
+# Crear un producto
+mutation {
+  crearProducto(input: {
+    nombre: "Laptop HP Pavilion"
+    descripcion: "Laptop 15 pulgadas, 16GB RAM"
+    precio: 2500000
+  }) {
+    id
+    nombre
+  }
+}
+
+# Actualizar un producto
+mutation {
+  actualizarProducto(id: "66c1a2b3d4e5f6789012abcd", input: {
+    nombre: "Laptop HP (Actualizada)"
+    descripcion: "32GB RAM, 1TB SSD"
+    precio: 3200000
+  }) {
+    id
+    precio
+  }
+}
+
+# Eliminar un producto
+mutation {
+  eliminarProducto(id: "66c1a2b3d4e5f6789012abcd")
+}
+```
+
+### Ventaja de GraphQL sobre REST
+
+Con GraphQL, el cliente pide solo los campos que necesita en una sola petición, evitando el over-fetching (traer datos de más) y el under-fetching (necesitar varias llamadas) típicos de REST.
 
 ## Materia
 

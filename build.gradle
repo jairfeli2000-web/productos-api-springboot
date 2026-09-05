@@ -25,6 +25,9 @@ dependencies {
     // Spring Data MongoDB (ODM)
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
+    // Spring for GraphQL (integración de GraphQL en Spring Boot)
+    implementation 'org.springframework.boot:spring-boot-starter-graphql'
+
     // Validación de datos
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
@@ -33,6 +36,7 @@ dependencies {
 
     // Testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.graphql:spring-graphql-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 

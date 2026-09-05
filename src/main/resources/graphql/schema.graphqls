@@ -1,0 +1,35 @@
+# Schema GraphQL para la gestión de productos
+# Define los tipos, queries (consultas) y mutations (modificaciones)
+
+# Tipo Producto que expone la API GraphQL
+type Producto {
+    id: ID!
+    nombre: String!
+    descripcion: String!
+    precio: Float!
+}
+
+# Datos de entrada para crear o actualizar un producto
+input ProductoInput {
+    nombre: String!
+    descripcion: String!
+    precio: Float!
+}
+
+# Consultas disponibles (operaciones de lectura)
+type Query {
+    # Obtiene todos los productos
+    productos: [Producto]
+    # Obtiene un producto por su ID
+    productoPorId(id: ID!): Producto
+}
+
+# Mutaciones disponibles (operaciones de escritura)
+type Mutation {
+    # Crea un nuevo producto
+    crearProducto(input: ProductoInput!): Producto
+    # Actualiza un producto existente
+    actualizarProducto(id: ID!, input: ProductoInput!): Producto
+    # Elimina un producto y retorna su ID
+    eliminarProducto(id: ID!): ID
+}
